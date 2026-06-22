@@ -25,9 +25,9 @@ OUTPUT_DIR = SCRIPT_DIR
 
 TAU_RATE = 0.001
 LAMBDAS = [3, 4, 5, 6]
-MAX_INPUT = 300_000
-MUP_TIMEOUT = 600
-GREEDY_TIMEOUT = 1200
+MAX_INPUT = 5_000_000
+MUP_TIMEOUT = 1800
+GREEDY_TIMEOUT = 3600
 
 DATASET_CONFIGS = [
     {
@@ -37,7 +37,7 @@ DATASET_CONFIGS = [
         "ordered_cols": [
             "sex", "c_charge_degree", "age_cat", "score_text", "v_score_text",
             "race", "decile_score", "juv_misd_count", "juv_other_count",
-            "juv_fel_count",
+            "juv_fel_count", "v_decile_score", "priors_count",
         ],
     },
     {
@@ -55,9 +55,9 @@ DATASET_CONFIGS = [
 ]
 
 D_MIN = 5
-D_MAX = 10
-D_STEP = 2
-YLIM = (1e-2, 1e2)
+D_MAX = 12
+D_STEP = 1
+YLIM = (1e-2, 1e4)
 
 
 # ---- data preparation -------------------------------------------------------
@@ -214,11 +214,15 @@ def _curve(rows, lam, ykey):
 def plot_figure17(rows, name):
 
     plt.figure(figsize=(6, 4))
+    all_d = set()
     for lam in LAMBDAS:
         xs, ys = _curve(rows, lam, "runtime")
         if xs:
             plt.semilogy(xs, ys, marker=MARKERS[lam], label=f"ℓ = {lam}")
+            all_d.update(xs)
     plt.ylim(*YLIM)
+    if all_d:
+        plt.xticks(sorted(all_d))
     plt.xlabel("Dimensions")
     plt.ylabel("Runtime (s)")
     plt.title(f"Fig. 17 reconstruction: Coverage Enhancement (Greedy) — {name}")
