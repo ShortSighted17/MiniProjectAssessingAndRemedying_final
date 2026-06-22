@@ -69,23 +69,23 @@ def greedy_coverage_enhancement(
     return selected
 
 
-def greedy_coverage_enhancement_from_mups(
-    mups: Iterable[Pattern],
-    domains: Domains,
-    target_level: int,
-    validation_oracle: ValidationOracle = always_valid,
-    generalize_output: bool = False,
-) -> List[Pattern]:
-
-    patterns_to_hit = uncovered_patterns_at_level(
-        mups=mups,
-        domains=domains,
-        target_level=target_level,
-    )
-
-    return greedy_coverage_enhancement(
-        patterns_to_hit=patterns_to_hit,
-        domains=domains,
-        validation_oracle=validation_oracle,
-        generalize_output=generalize_output,
-    )
+# def greedy_coverage_enhancement_from_mups(
+#     mups: Iterable[Pattern],
+#     domains: Domains,
+#     target_level: int,
+#     validation_oracle: ValidationOracle = always_valid,
+#     generalize_output: bool = False,
+# ) -> List[Pattern]:
+#
+#     patterns_to_hit = uncovered_patterns_at_level(
+#         mups=mups,
+#         domains=domains,
+#         target_level=target_level,
+#     )
+#
+#     return greedy_coverage_enhancement(
+#         patterns_to_hit=patterns_to_hit,
+#         domains=domains,
+#         validation_oracle=validation_oracle,
+#         generalize_output=generalize_output,
+#     )

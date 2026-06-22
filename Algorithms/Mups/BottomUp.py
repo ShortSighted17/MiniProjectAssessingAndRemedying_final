@@ -174,7 +174,3 @@ def pattern_combiner(
 
     return mups
 
-
-# Optional alias, in case your other files expect this name.
-bottom_up = pattern_combiner
-pattern_combiner_bottom_up = pattern_combiner
