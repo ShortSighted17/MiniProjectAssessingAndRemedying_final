@@ -224,6 +224,7 @@ def plot_figure17(rows, name):
     plt.ylim(*YLIM)
     if all_d:
         plt.xticks(sorted(all_d))
+        plt.xlim(min(all_d), max(all_d))
     plt.xlabel("Dimensions")
     plt.ylabel("Runtime (s)")
     plt.title(f"Fig. 17 reconstruction: Coverage Enhancement (Greedy) — {name}")
