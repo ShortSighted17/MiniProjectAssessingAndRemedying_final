@@ -11,7 +11,6 @@ Dataset = List[Tuple[Any, ...]]
 def coverage(pattern: Pattern, dataset: Dataset) -> int:
     """
     Count how many rows match the pattern.
-    X/None means the attribute is unspecified.
     """
     count = 0
 
@@ -36,7 +35,6 @@ def is_uncovered(pattern: Pattern, dataset: Dataset, tau: int) -> bool:
 def level(pattern: Pattern) -> int:
     """
     Number of deterministic cells.
-    Example: (X, 1, X, 0) has level 2.
     """
     return sum(1 for value in pattern if value is not X)
 
@@ -73,12 +71,6 @@ def children(pattern: Pattern, domains: List[List[Any]]) -> List[Pattern]:
 
 
 def children_rule1(pattern: Pattern, domains: List[List[Any]]) -> List[Pattern]:
-    """
-    Children under the paper's Rule 1: only specialise the X's that lie to the
-    right of the right-most deterministic element. Every node then has exactly
-    one parent that generates it (Theorem 3), so a top-down traversal reaches
-    each node once -- no visited set required.
-    """
     rightmost = -1
     for i, value in enumerate(pattern):
         if value is not X:
@@ -96,11 +88,6 @@ def children_rule1(pattern: Pattern, domains: List[List[Any]]) -> List[Pattern]:
 
 
 def is_parent_covered_mup(pattern: Pattern, dataset: Dataset, tau: int) -> bool:
-    """
-    A pattern is MUP if:
-    1. it is uncovered
-    2. all its parents are covered
-    """
     if not is_uncovered(pattern, dataset, tau):
         return False
 
@@ -112,13 +99,6 @@ def is_parent_covered_mup(pattern: Pattern, dataset: Dataset, tau: int) -> bool:
 
 
 def dominates(general: Pattern, specific: Pattern) -> bool:
-    """
-    general dominates specific if every deterministic value in general
-    agrees with specific.
-
-    Example:
-    (1, X, X) dominates (1, 0, 1)
-    """
     for g_val, s_val in zip(general, specific):
         if g_val is not X and g_val != s_val:
             return False
@@ -134,27 +114,10 @@ def dominates_any_mup(pattern: Pattern, mups: Set[Pattern]) -> bool:
     return any(dominates(pattern, mup) for mup in mups)
 
 
-
-# ===========================================================================
-# EFFICIENCY ADD-IN  —  paste this at the END of MutualFuncs.py
-# ---------------------------------------------------------------------------
-# Implements the paper's appendices:
-#   Appendix A  ->  CoverageOracle      (inverted-index coverage; no per-call
-#                                         scan of the dataset)
-#   Appendix B  ->  MupDominanceIndex   (inverted-index MUP dominance; no
-#                                         pattern-by-pattern comparison)
-#
-# Both use Python ints as arbitrary-width bit vectors, so ANDs are word-parallel
-# and "stop as soon as the mask is empty" comes for free.
-#
-# Reuses `X` already defined at the top of MutualFuncs.py. The typing import
-# below only adds `Dict`; re-importing the others is harmless.
-# ===========================================================================
 from typing import Any, Dict, List, Tuple
 
 
 class CoverageOracle:
-    """Appendix A: inverted-index coverage oracle."""
 
     def __init__(self, dataset: List[Tuple[Any, ...]]):
         # Aggregate duplicate rows: unique value combinations + a count vector.
@@ -214,8 +177,6 @@ class CoverageOracle:
 
 
 class MupDominanceIndex:
-    """Appendix B: inverted-index dominance checking over the discovered MUPs."""
-
     def __init__(self, d: int):
         self.d = d
         self.size = 0

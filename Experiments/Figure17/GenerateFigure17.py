@@ -35,9 +35,10 @@ DATASET_CONFIGS = [
         "csv": "CompasDataset.csv",
         "encoding": "utf-8",
         "ordered_cols": [
-            "sex", "c_charge_degree", "age_cat", "score_text", "v_score_text",
-            "race", "decile_score", "juv_misd_count", "juv_other_count",
-            "juv_fel_count", "v_decile_score", "priors_count",
+            "sex","age_cat","race","juv_fel_count","decile_score","juv_misd_count",
+            "juv_other_count","priors_count","c_charge_degree","is_recid",
+            "r_charge_degree","is_violent_recid","vr_charge_degree","vr_charge_desc",
+            "type_of_assessment","score_text","v_type_of_assessment","v_decile_score","v_score_text","event"
         ],
     },
     {
@@ -54,9 +55,9 @@ DATASET_CONFIGS = [
     },
 ]
 
-D_MIN = 5
-D_MAX = 12
-D_STEP = 1
+D_MIN = 4
+D_MAX = 22
+D_STEP = 4
 YLIM = (1e-2, 1e4)
 
 

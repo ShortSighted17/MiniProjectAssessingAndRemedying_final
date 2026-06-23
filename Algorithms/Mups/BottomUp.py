@@ -72,7 +72,6 @@ def _coverage_from_partition_children(
 
     split_attr = _rightmost_x(pattern)
 
-    # Should not usually happen for a parent candidate, but safe to keep.
     if split_attr < 0:
         return child_counts.get(pattern, 0)
 
