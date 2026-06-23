@@ -280,7 +280,7 @@ def _plot(results_df: pd.DataFrame, dataset_name: str, config: Experiment15Confi
 
     fig, ax = plt.subplots()
 
-    # plot higher caps first so the legend reads 8, 6, 4, 2 like the paper
+    # plot higher caps first
     levels_sorted = sorted(results_df["max_level"].unique(), reverse=True)
     for i, lvl in enumerate(levels_sorted):
         sub = results_df[results_df["max_level"] == lvl].sort_values("dimensions")
@@ -319,11 +319,11 @@ def _plot(results_df: pd.DataFrame, dataset_name: str, config: Experiment15Confi
 
 
 # ---------------------------------------------------------------------------
-# Self-contained smoke test (no CSV needed)
+# Self-contained test
 # ---------------------------------------------------------------------------
 
-def _smoke_test():
-    """Tiny synthetic dataset, just to confirm the pipeline runs end-to-end."""
+def _test():
+    """Tiny synthetic dataset, to confirm the pipeline runs end-to-end."""
     import random
 
     rng = random.Random(0)
@@ -354,4 +354,4 @@ def _smoke_test():
 
 
 if __name__ == "__main__":
-    _smoke_test()
+    _test()
